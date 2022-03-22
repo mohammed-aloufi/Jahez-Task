@@ -3,7 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/bg_color.xml" value="0.166" />
+        <entry key="app/src/main/res/drawable/btn_color.xml" value="0.166" />
+        <entry key="app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.166" />
+        <entry key="app/src/main/res/drawable/ic_jahez_logo.xml" value="0.142" />
+        <entry key="app/src/main/res/drawable/left_line.xml" value="0.166" />
+        <entry key="app/src/main/res/drawable/right_line.xml" value="0.166" />
+        <entry key="app/src/main/res/drawable/secondary_btn_bg.xml" value="0.166" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2962962962962963" />
+        <entry key="app/src/main/res/layout/login_fragment.xml" value="0.3496144911822151" />
+        <entry key="app/src/main/res/layout/register_fragment.xml" value="0.2962962962962963" />
       </map>
     </option>
   </component>

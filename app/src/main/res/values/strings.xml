@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Jahez-Task</string>
+    <string name="create_account_btn_label">Create Account</string>
+    <string name="have_an_account_label">Already have an account?</string>
+    <string name="login_label">Login</string>
+    <string name="register_label">Register</string>
+    <string name="name_placeholder">Your name</string>
+    <string name="email_placeholder">Enter your email</string>
+    <string name="password_placeholder">Password</string>
+    <string name="password_placeholder2">Pick a strong password</string>
+    <string name="password_placeholder3">Re-enter password</string>
+    <string name="welcome_label">Welcome back you\'ve been missed!</string>
+    <string name="forget_password_label">Forget Password?</string>
+    <string name="don_t_have_an_account_label">Don\'t have an account?</string>
 </resources>
