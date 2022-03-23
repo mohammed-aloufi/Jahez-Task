@@ -1,10 +1,10 @@
-package com.example.jahez_task.domain.repository
+package com.example.jahez_task.data.authentication
 
 import com.example.jahez_task.domain.models.AuthState
-import com.example.jahez_task.utils.Resource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 
-interface Repository {
+interface AuthProvider {
 
     suspend fun login(email: String, password: String): Boolean
 
