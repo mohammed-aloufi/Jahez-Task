@@ -80,16 +80,18 @@ class RegisterFragment : BaseFragment(),
 
     override fun onClick(v: View?) {
         when(v){
-            binding.passwordTxtInputL -> onPassEndIconClicked()
             binding.submitBtn -> onSubmitClicked()
             binding.loginTxtView -> popBackStack()
         }
     }
 
     private fun setOnClickListeners() {
-        binding.passwordTxtInputL.setEndIconOnClickListener(this)
         binding.submitBtn.setOnClickListener(this)
         binding.loginTxtView.setOnClickListener(this)
+
+        binding.passwordTxtInputL.setEndIconOnClickListener {
+            onPassEndIconClicked()
+        }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -124,10 +126,6 @@ class RegisterFragment : BaseFragment(),
         }
     }
 
-    private fun popBackStack(){
-        findNavController().popBackStack()
-    }
-
     private fun textWatchers() {
         binding.nameEdtTxt.doOnTextChanged { text, _, _, _ ->
             binding.nameTxtInputL.isEndIconVisible = !text.isNullOrBlank()
@@ -157,7 +155,7 @@ class RegisterFragment : BaseFragment(),
                 binding.nameTxtInputL.error = resources.getString(R.string.required_field)
                 false
             }
-            email.isBlank() -> {
+            email.isBlank() && !email.isValidEmail() -> {
                 binding.emailTxtInputL.isErrorEnabled = true
                 binding.emailTxtInputL.error = resources.getString(R.string.required_field)
                 false
