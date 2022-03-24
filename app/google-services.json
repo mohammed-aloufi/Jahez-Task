@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1015345358640",
+    "project_id": "jahez-task",
+    "storage_bucket": "jahez-task.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015345358640:android:949f5912bab55982094af5",
+        "android_client_info": {
+          "package_name": "com.example.jahez_task"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015345358640-kh5ssb8de39j02jpbg52po0kl1um4cat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaAIWwhl27JM0-NSJAL3m1zkHYZLDRF0c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015345358640-kh5ssb8de39j02jpbg52po0kl1um4cat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
