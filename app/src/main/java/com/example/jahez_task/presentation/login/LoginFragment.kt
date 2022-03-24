@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.jahez_task.R
 import com.example.jahez_task.base.BaseFragment
 import com.example.jahez_task.databinding.LoginFragmentBinding
+import com.example.jahez_task.utils.Constants
 import com.example.jahez_task.utils.Constants.INVALID_EMAIL
 import com.example.jahez_task.utils.Constants.INVALID_PASSWORD
 import com.example.jahez_task.utils.Constants.VALID_INPUT
