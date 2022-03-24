@@ -1,7 +1,6 @@
 package com.example.jahez_task.presentation.login
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.InputType
 import androidx.fragment.app.Fragment
@@ -10,21 +9,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import com.example.jahez_task.R
 import com.example.jahez_task.base.BaseFragment
 import com.example.jahez_task.databinding.LoginFragmentBinding
+import com.example.jahez_task.utils.Constants.INVALID_EMAIL
+import com.example.jahez_task.utils.Constants.INVALID_PASSWORD
+import com.example.jahez_task.utils.Constants.VALID_INPUT
 import com.example.jahez_task.utils.InputValidator.isValidEmail
 import com.example.jahez_task.utils.InputValidator.isValidPassword
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -39,8 +42,6 @@ class LoginFragment : BaseFragment(),
         savedInstanceState: Bundle?
     ): View {
         binding = LoginFragmentBinding.inflate(layoutInflater)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
-
         init()
         observeLoginState()
 
@@ -68,23 +69,35 @@ class LoginFragment : BaseFragment(),
     }
 
     private fun observeLoginState() {
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.loginState.collect { state ->
-                    when {
-                        state.isLoading -> {
-                            binding.progressBar.visibility = View.VISIBLE
-                        }
-                        state.isSuccessful -> {
-                            binding.progressBar.visibility = View.GONE
-                            showSnackbar(requireView(), "Success")
-                        }
-                        state.message.isNotBlank() -> {
-                            binding.progressBar.visibility = View.GONE
-                            showSnackbar(requireView(), state.message)
-                        }
-                    }
+        collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.loginState){ state ->
+            when {
+                state.isLoading -> {
+                    binding.progressBar.visibility = View.VISIBLE
                 }
+                state.isSuccessful -> {
+                    binding.progressBar.visibility = View.GONE
+                    showSnackbar(requireView(), "Success")
+                }
+                state.message.isNotBlank() -> {
+                    binding.progressBar.visibility = View.GONE
+                    showSnackbar(requireView(), state.message)
+                }
+            }
+        }
+    }
+
+    private fun observeInputState(email: String, password: String){
+        collectLatestLifecycleFlow(this.viewLifecycleOwner, viewModel.inputState){ state ->
+            when(state) {
+                INVALID_EMAIL ->{
+                    binding.emailTxtInputL.isErrorEnabled = true
+                    binding.emailTxtInputL.error = resources.getString(R.string.required_field)
+                }
+                INVALID_PASSWORD -> {
+                    binding.passTxtInputL.isErrorEnabled = true
+                    binding.passTxtInputL.error = resources.getString(R.string.required_field)
+                }
+                VALID_INPUT -> viewModel.login(email, password)
             }
         }
     }
@@ -129,30 +142,11 @@ class LoginFragment : BaseFragment(),
         val email = binding.emailEdtTxt.text.toString()
         val password = binding.passEdtTxt.text.toString()
 
-        if (isInputValid(email, password)) {
-            viewModel.login(email, password)
-        }
+        observeInputState(email, password)
+        viewModel.checkInputs(email, password)
     }
 
     private fun onRegisterClicked() {
         findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-    }
-
-    private fun isInputValid(email: String, password: String): Boolean {
-        return when {
-            email.isBlank() && !email.isValidEmail() -> {
-                binding.emailTxtInputL.isErrorEnabled = true
-                binding.emailTxtInputL.error = resources.getString(R.string.required_field)
-                false
-            }
-            password.isBlank() -> {
-                binding.passTxtInputL.isErrorEnabled = true
-                binding.passTxtInputL.error = resources.getString(R.string.required_field)
-                false
-            }
-            else -> {
-                true
-            }
-        }
     }
 }

@@ -17,6 +17,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.jahez_task.R
 import com.example.jahez_task.base.BaseFragment
 import com.example.jahez_task.databinding.RegisterFragmentBinding
+import com.example.jahez_task.utils.Constants
+import com.example.jahez_task.utils.Constants.EMPTY_EMAIL
+import com.example.jahez_task.utils.Constants.EMPTY_PASSWORD
+import com.example.jahez_task.utils.Constants.INVALID_EMAIL
+import com.example.jahez_task.utils.Constants.INVALID_NAME
+import com.example.jahez_task.utils.Constants.INVALID_PASSWORD
+import com.example.jahez_task.utils.Constants.PASSWORDS_NOT_MATCHING
+import com.example.jahez_task.utils.Constants.VALID_INPUT
 import com.example.jahez_task.utils.InputValidator.isValidEmail
 import com.example.jahez_task.utils.InputValidator.isValidPassword
 import com.google.android.material.snackbar.Snackbar
@@ -36,10 +44,8 @@ class RegisterFragment : BaseFragment(),
         savedInstanceState: Bundle?
     ): View {
         binding = RegisterFragmentBinding.inflate(layoutInflater)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         init()
         observeRegisterState()
-
 
         return binding.root
     }
@@ -48,7 +54,6 @@ class RegisterFragment : BaseFragment(),
         super.onStart()
         setOnClickListeners()
         textWatchers()
-
     }
 
     private fun init() {
@@ -57,23 +62,54 @@ class RegisterFragment : BaseFragment(),
     }
 
     private fun observeRegisterState() {
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.registerState.collect { state ->
-                    when {
-                        state.isLoading -> {
-                            binding.progressBar.visibility = View.VISIBLE
-                        }
-                        state.isSuccessful -> {
-                            binding.progressBar.visibility = View.GONE
-                            popBackStack()
-                        }
-                        state.message.isNotBlank() -> {
-                            binding.progressBar.visibility = View.GONE
-                            showSnackbar(requireView(), state.message)
-                        }
-                    }
+        collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.registerState){ state ->
+            when {
+                state.isLoading -> {
+                    binding.progressBar.visibility = View.VISIBLE
                 }
+                state.isSuccessful -> {
+                    binding.progressBar.visibility = View.GONE
+                    popBackStack()
+                }
+                state.message.isNotBlank() -> {
+                    binding.progressBar.visibility = View.GONE
+                    showSnackbar(requireView(), state.message)
+                }
+            }
+        }
+    }
+
+    private fun observeInputState(name: String, email: String, password: String){
+        collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.inputState){ state ->
+            when(state){
+                INVALID_NAME -> {
+                    binding.nameTxtInputL.isErrorEnabled = true
+                    binding.nameTxtInputL.error = resources.getString(R.string.required_field)
+                }
+                INVALID_EMAIL -> {
+                    binding.emailTxtInputL.isErrorEnabled = true
+                    binding.emailTxtInputL.error = resources.getString(R.string.invalid_email)
+                }
+                INVALID_PASSWORD -> {
+                    binding.passwordTxtInputL.isErrorEnabled = true
+                    binding.confirmPassTxtInputL.isErrorEnabled = true
+                    binding.confirmPassTxtInputL.error = resources.getString(R.string.pass_rules)
+                }
+                EMPTY_EMAIL -> {
+                    binding.emailTxtInputL.isErrorEnabled = true
+                    binding.emailTxtInputL.error = resources.getString(R.string.required_field)
+                }
+                EMPTY_PASSWORD -> {
+                    binding.passwordTxtInputL.isErrorEnabled = true
+                    binding.passwordTxtInputL.error = resources.getString(R.string.required_field)
+                }
+                PASSWORDS_NOT_MATCHING -> {
+                    binding.passwordTxtInputL.isErrorEnabled = true
+                    binding.confirmPassTxtInputL.isErrorEnabled = true
+                    binding.passwordTxtInputL.error =
+                        resources.getString(R.string.unmatched_pass_warning)
+                }
+                VALID_INPUT -> viewModel.register(name, email, password)
             }
         }
     }
@@ -121,9 +157,8 @@ class RegisterFragment : BaseFragment(),
         val password = binding.passwordEdtTxt.text.toString().trim()
         val passwordConfirm = binding.confirmPassEdtTxt.text.toString().trim()
 
-        if (isInputValid(name, email, password, passwordConfirm)){
-            viewModel.register(name, email, password)
-        }
+        observeInputState(name, email, password)
+        viewModel.isInputValid(name, email, password, passwordConfirm)
     }
 
     private fun textWatchers() {
@@ -145,42 +180,6 @@ class RegisterFragment : BaseFragment(),
         binding.confirmPassEdtTxt.doOnTextChanged { text, _, _, _ ->
             binding.passwordTxtInputL.isErrorEnabled = false
             binding.confirmPassTxtInputL.isErrorEnabled = false
-        }
-    }
-
-    private fun isInputValid(name: String, email: String, password: String, confirmPassword: String): Boolean {
-        return when {
-            name.isBlank() -> {
-                binding.nameTxtInputL.isErrorEnabled = true
-                binding.nameTxtInputL.error = resources.getString(R.string.required_field)
-                false
-            }
-            email.isBlank() && !email.isValidEmail() -> {
-                binding.emailTxtInputL.isErrorEnabled = true
-                binding.emailTxtInputL.error = resources.getString(R.string.required_field)
-                false
-            }
-            password.isBlank() -> {
-                binding.passwordTxtInputL.isErrorEnabled = true
-                binding.passwordTxtInputL.error = resources.getString(R.string.required_field)
-                false
-            }
-            password != confirmPassword -> {
-                binding.passwordTxtInputL.isErrorEnabled = true
-                binding.confirmPassTxtInputL.isErrorEnabled = true
-                binding.passwordTxtInputL.error =
-                    resources.getString(R.string.unmatched_pass_warning)
-                false
-            }
-            !password.isValidPassword() -> {
-                binding.passwordTxtInputL.isErrorEnabled = true
-                binding.confirmPassTxtInputL.isErrorEnabled = true
-                binding.confirmPassTxtInputL.error = resources.getString(R.string.pass_rules)
-                false
-            }
-            else -> {
-                true
-            }
         }
     }
 

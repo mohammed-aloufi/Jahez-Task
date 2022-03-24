@@ -16,4 +16,5 @@
     <string name="pass_rules">&#8226; Password minimum length 8. \n&#8226; Has one uppercase. \n&#8226; Has numbers. \n&#8226; One special character(@#$%^&amp;+=!).</string>
     <string name="unmatched_pass_warning">Passwords doesn\'t match</string>
     <string name="required_field">Required field</string>
+    <string name="invalid_email">Please enter a valid email</string>
 </resources>

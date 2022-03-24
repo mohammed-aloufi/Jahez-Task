@@ -11,6 +11,8 @@
     <color name="light_red">#e73241</color>
     <color name="bg_color">#f5f3f3</color>
     <color name="blue">#0000ff</color>
-    <color name="grey">#292929</color>
+    <color name="dark_grey">#292929</color>
+    <color name="grey">#adb5bd</color>
+    <color name="light_grey">#f5f3f4</color>
     <color name="yellow">#ffa100</color>
 </resources>
