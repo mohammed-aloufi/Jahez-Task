@@ -118,8 +118,8 @@ class RegisterFragment : BaseFragment(),
     private fun onSubmitClicked(){
         val name = binding.nameEdtTxt.text.toString()
         val email = binding.emailEdtTxt.text.toString()
-        val password = binding.passwordEdtTxt.text.toString()
-        val passwordConfirm = binding.confirmPassEdtTxt.text.toString()
+        val password = binding.passwordEdtTxt.text.toString().trim()
+        val passwordConfirm = binding.confirmPassEdtTxt.text.toString().trim()
 
         if (isInputValid(name, email, password, passwordConfirm)){
             viewModel.register(name, email, password)
@@ -172,7 +172,7 @@ class RegisterFragment : BaseFragment(),
                     resources.getString(R.string.unmatched_pass_warning)
                 false
             }
-            password.isValidPassword() -> {
+            !password.isValidPassword() -> {
                 binding.passwordTxtInputL.isErrorEnabled = true
                 binding.confirmPassTxtInputL.isErrorEnabled = true
                 binding.confirmPassTxtInputL.error = resources.getString(R.string.pass_rules)

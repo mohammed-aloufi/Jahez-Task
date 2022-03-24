@@ -31,7 +31,7 @@ class LoginViewModel @Inject constructor(
                         _loginState.emit(AuthState(isLoading = true))
                     }
                     is Resource.Success -> {
-                        _loginState.emit(AuthState(isSuccessful = result.data!!))
+                        _loginState.emit(AuthState(isSuccessful = result.data?.isSuccessful ?: false))
                     }
                     is Resource.Error -> {
                         _loginState.emit(AuthState(message = result.message ?: "Unknown error!"))

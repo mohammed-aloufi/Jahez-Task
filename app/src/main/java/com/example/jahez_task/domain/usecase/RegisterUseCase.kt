@@ -1,7 +1,5 @@
 package com.example.jahez_task.domain.usecase
 
-import android.content.Context
-import com.example.jahez_task.R
 import com.example.jahez_task.domain.models.AuthState
 import com.example.jahez_task.domain.repository.Repository
 import com.example.jahez_task.utils.InputValidator.isValidEmail
@@ -21,11 +19,15 @@ class RegisterUseCase @Inject constructor(
         name: String,
         email: String,
         password: String
-    ): Flow<Resource<Boolean>> = flow {
+    ): Flow<Resource<AuthState>> = flow {
         try {
             emit(Resource.Loading())
             val response = repository.register(name, email, password)
-            emit(Resource.Success(response))
+            if (response.isSuccessful){
+                emit(Resource.Success(response))
+            }else {
+                emit(Resource.Error(message = response.message))
+            }
         } catch (e: Exception) {
             emit(Resource.Error(message = e.message))
         }

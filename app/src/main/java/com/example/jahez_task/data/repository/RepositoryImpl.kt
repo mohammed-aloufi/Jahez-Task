@@ -13,11 +13,11 @@ class RepositoryImpl @Inject constructor(
     private val authProvider: AuthProvider
 ): Repository {
 
-    override suspend fun login(email: String, password: String): Boolean {
+    override suspend fun login(email: String, password: String): AuthState {
         return authProvider.login(email, password)
     }
 
-    override suspend fun register(name: String, email: String, password: String): Boolean {
+    override suspend fun register(name: String, email: String, password: String): AuthState {
         return authProvider.register(name, email, password)
     }
 

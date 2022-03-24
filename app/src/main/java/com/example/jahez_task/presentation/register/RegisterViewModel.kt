@@ -28,7 +28,7 @@ class RegisterViewModel @Inject constructor(
                         _registerState.emit(AuthState(isLoading = true))
                     }
                     is Resource.Success -> {
-                        _registerState.emit(AuthState(isSuccessful = result.data!!))
+                        _registerState.emit(AuthState(isSuccessful = result.data?.isSuccessful ?: false))
                     }
                     is Resource.Error -> {
                         _registerState.emit(AuthState(message = result.message ?: "Unknown error!"))
