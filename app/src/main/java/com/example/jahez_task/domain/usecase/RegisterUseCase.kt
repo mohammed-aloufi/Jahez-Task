@@ -2,14 +2,9 @@ package com.example.jahez_task.domain.usecase
 
 import com.example.jahez_task.domain.models.AuthState
 import com.example.jahez_task.domain.repository.Repository
-import com.example.jahez_task.utils.InputValidator.isValidEmail
-import com.example.jahez_task.utils.InputValidator.isValidPassword
-import com.example.jahez_task.utils.Resource
-import kotlinx.coroutines.CoroutineScope
+import com.example.jahez_task.domain.models.Resource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class RegisterUseCase @Inject constructor(

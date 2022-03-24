@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         findNavController(R.id.nav_host_fragment)
         window.statusBarColor = ContextCompat.getColor(this, R.color.red)
-
+        (this as AppCompatActivity?)!!.supportActionBar!!.hide()
     }
 
 

@@ -2,7 +2,7 @@ package com.example.jahez_task.domain.usecase
 
 import com.example.jahez_task.domain.models.AuthState
 import com.example.jahez_task.domain.repository.Repository
-import com.example.jahez_task.utils.Resource
+import com.example.jahez_task.domain.models.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
