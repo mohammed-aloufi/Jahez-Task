@@ -15,6 +15,9 @@ import com.example.jahez_task.R
 import com.example.jahez_task.base.BaseFragment
 import com.example.jahez_task.databinding.HomeFragmentBinding
 import com.example.jahez_task.domain.models.Restaurant
+import com.example.jahez_task.utils.Constants.AUTO_SORT
+import com.example.jahez_task.utils.Constants.DISTANCE_SORT
+import com.example.jahez_task.utils.Constants.RATING_SORT
 import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.abs
@@ -22,7 +25,7 @@ import kotlin.math.abs
 private const val TAG = "HomeFragment"
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment(), SortBottomSheet.SortCallBack {
 
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: HomeFragmentBinding
@@ -44,14 +47,24 @@ class HomeFragment : BaseFragment() {
         return binding.root
     }
 
-    private fun observeLoggedInState(){
-        collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.loggedState){
+    override fun onStart() {
+        super.onStart()
+
+        binding.sortImgView.setOnClickListener {
+            val sortFragment = SortBottomSheet()
+            sortFragment.setTargetFragment(this, 0)
+            sortFragment.show(parentFragmentManager, viewModel.sortBy)
+        }
+    }
+
+    private fun observeLoggedInState() {
+        collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.loggedState) {
             if (!it) findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
             Log.d(TAG, "observeLoggedInState: $it")
         }
     }
 
-    private fun setSearchView(){
+    private fun setSearchView() {
         setSearchViewOnTouchListener()
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -71,7 +84,7 @@ class HomeFragment : BaseFragment() {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun setSearchViewOnTouchListener(){
+    private fun setSearchViewOnTouchListener() {
         binding.searchView.setOnTouchListener { view, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_DOWN) {
                 binding.searchView.isIconified = false
@@ -134,5 +147,28 @@ class HomeFragment : BaseFragment() {
                 }
             }
         })
+    }
+
+    override fun onSortSelected(sortBy: String) {
+        viewModel.sortBy = sortBy
+        updateUI()
+    }
+
+    private fun updateUI() {
+        val sortedList = when (viewModel.sortBy) {
+            RATING_SORT -> {
+                filteredRestaurants.sortedBy {
+                    it.rating
+                }
+            }
+            DISTANCE_SORT -> {
+                filteredRestaurants.sortedBy {
+                    it.distance
+                }
+            }
+            else -> filteredRestaurants
+        }
+
+        binding.restaurantsRv.adapter = RestaurantAdapter(sortedList)
     }
 }

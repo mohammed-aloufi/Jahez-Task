@@ -7,6 +7,7 @@ import com.example.jahez_task.domain.models.Resource
 import com.example.jahez_task.domain.models.RestaurantsState
 import com.example.jahez_task.domain.usecase.GetAllRestaurantsUseCase
 import com.example.jahez_task.domain.usecase.IsLoggedInUseCase
+import com.example.jahez_task.utils.Constants.AUTO_SORT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -24,6 +25,8 @@ class HomeViewModel @Inject constructor(
 
     private val _loggedState: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val loggedState: SharedFlow<Boolean> = _loggedState
+
+    var sortBy = AUTO_SORT
 
     init {
         getAllRestaurants()

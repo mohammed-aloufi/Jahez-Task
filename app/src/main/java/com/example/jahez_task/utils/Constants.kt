@@ -10,4 +10,9 @@ object Constants {
     const val VALID_INPUT = -1
 
     const val BASE_URL = "https://jahez-other-oniiphi8.s3.eu-central-1.amazonaws.com/"
+
+    const val AUTO_SORT = "auto"
+    const val RATING_SORT = "rating"
+    const val DISTANCE_SORT = "distance"
+
 }
