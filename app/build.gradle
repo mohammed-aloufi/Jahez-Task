@@ -28,6 +28,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        dataBinding true
     }
 
     compileOptions {
@@ -86,4 +87,7 @@ dependencies {
     //Firebase with coroutine
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
 
+    //Image loader
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
 }

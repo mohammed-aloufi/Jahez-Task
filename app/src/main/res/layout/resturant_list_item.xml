@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.jahez_task.presentation.home.HomeViewModel" />
+    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,10 +25,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imageView"
+            android:id="@+id/restaurantImgView"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:background="@color/grey"
+            android:background="@android:color/transparent"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/ic_launcher_foreground"
             tools:ignore="ImageContrastCheck" />
@@ -34,53 +41,57 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Test"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/cardView" />
+<!--        tools:text="@{() -> viewModel}"-->
+
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/offerView"
         android:layout_width="85dp"
         android:layout_height="25dp"
+        android:visibility="gone"
         android:background="@drawable/offer_bg"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintBottom_toTopOf="@+id/openCloseTxtView"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/restaurantNameTv" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/offersTxtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="9 SR Delivery"
+        tools:text="9 SR Delivery"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view" />
+        app:layout_constraintBottom_toBottomOf="@+id/offerView"
+        app:layout_constraintEnd_toEndOf="@+id/offerView"
+        app:layout_constraintStart_toStartOf="@+id/offerView"
+        app:layout_constraintTop_toTopOf="@+id/offerView" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/openCloseTxtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:layout_marginBottom="10dp"
-        android:textSize="12sp"
         android:textColor="@color/green"
-        android:text="Open"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/restaurantNameTv" />
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        tools:text="Open" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/hoursTxtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:textSize="12sp"
-        android:text="05:30 AM - 04:30 AM"
+        tools:text="05:30 AM - 04:30 AM"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -96,11 +107,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/distanceTxtView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:text="0.8"
+            tools:text="0.8"
             android:textSize="11sp" />
 
         <ImageView
@@ -125,11 +136,11 @@
         app:layout_constraintTop_toBottomOf="@id/linearLayout">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/ratingTxtView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:text="8.0"
+            tools:text="8.0"
             android:textSize="11sp" />
 
         <ImageView
@@ -152,3 +163,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

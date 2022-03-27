@@ -78,6 +78,7 @@ class LoginFragment : BaseFragment(),
                 state.isSuccessful -> {
                     binding.progressBar.visibility = View.GONE
                     showSnackbar(requireView(), "Success")
+                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
                 state.message.isNotBlank() -> {
                     binding.progressBar.visibility = View.GONE

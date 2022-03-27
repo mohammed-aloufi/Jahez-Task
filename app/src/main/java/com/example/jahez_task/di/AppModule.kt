@@ -6,7 +6,9 @@ import com.example.jahez_task.base.App
 import com.example.jahez_task.data.authentication.AuthProvider
 import com.example.jahez_task.data.authentication.FirebaseAuthentication
 import com.example.jahez_task.data.repository.RepositoryImpl
+import com.example.jahez_task.data.retrofitservice.JahezApi
 import com.example.jahez_task.domain.repository.Repository
+import com.example.jahez_task.utils.Constants.BASE_URL
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
@@ -17,6 +19,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -37,11 +41,28 @@ object AppModule {
         )
     }
 
+    //I Did not provide an OkHttp Client because I Don't have to set headers in this API
     @Provides
     @Singleton
-    fun provideRepository(authProvider: AuthProvider): Repository {
+    fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideJahezApi(retrofit: Retrofit): JahezApi {
+        return retrofit.create(JahezApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRepository(authProvider: AuthProvider, jahezApi: JahezApi): Repository {
         return RepositoryImpl(
-            authProvider
+            authProvider,
+            jahezApi
         )
     }
 }

@@ -8,4 +8,6 @@ object Constants {
     const val EMPTY_PASSWORD = 5
     const val PASSWORDS_NOT_MATCHING = 6
     const val VALID_INPUT = -1
+
+    const val BASE_URL = "https://jahez-other-oniiphi8.s3.eu-central-1.amazonaws.com/"
 }

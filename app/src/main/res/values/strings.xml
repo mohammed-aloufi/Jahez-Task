@@ -17,4 +17,5 @@
     <string name="unmatched_pass_warning">Passwords doesn\'t match</string>
     <string name="required_field">Required field</string>
     <string name="invalid_email">Please enter a valid email</string>
+    <string name="error_label">Unknown error</string>
 </resources>

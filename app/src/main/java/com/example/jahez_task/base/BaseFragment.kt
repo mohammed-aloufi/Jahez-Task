@@ -41,7 +41,7 @@ open class BaseFragment: Fragment() {
 
     fun <T> collectLifecycleFlow(viewLifecycleOwner: LifecycleOwner, flow: Flow<T>, collect: suspend (T) -> Unit) {
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 flow.collect(collect)
             }
         }
