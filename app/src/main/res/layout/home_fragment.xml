@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<layout>-->
+
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -31,15 +31,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="60dp"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <androidx.appcompat.widget.SearchView
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
                     android:id="@+id/searchView"
                     android:layout_width="250dp"
                     android:layout_height="35dp"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="15dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/search_view_bg"
+                    android:drawableTint="@color/dark_grey"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:shadowColor="@color/red"
+                    android:textColor="@color/dark_grey"
+                    android:textColorHighlight="@color/dark_grey"
+                    android:textColorLink="@color/dark_grey"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -58,14 +67,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 app:layout_collapseMode="pin">
-                    <ImageView
-                        android:id="@+id/logoImgView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:src="@drawable/jahez_logo"/>
+
+                <ImageView
+                    android:id="@+id/logoImgView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:src="@drawable/jahez_logo" />
             </Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -82,26 +92,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/collapsingToolbar" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:indeterminateTint="@color/yellow"
-        android:indeterminate="true"
-        />
-
-    <TextView
-        android:id="@+id/errorTxtView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:textColor="@color/light_red"
-        android:visibility="gone"
-        tools:text="Error"/>
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-<!--</layout>-->

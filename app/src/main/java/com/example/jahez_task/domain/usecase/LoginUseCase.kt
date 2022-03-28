@@ -13,17 +13,5 @@ class LoginUseCase @Inject constructor(
     suspend operator fun invoke(
         email: String,
         password: String
-    ): Flow<Resource<AuthState>> = flow {
-        try {
-            emit(Resource.Loading())
-            val response = repository.login(email, password)
-            if (response.isSuccessful){
-                emit(Resource.Success(response))
-            }else {
-                emit(Resource.Error(message = response.message))
-            }
-        } catch (e: Exception) {
-            emit(Resource.Error(message = e.message))
-        }
-    }
+    ): Flow<Resource<Boolean>> = repository.login(email, password)
 }

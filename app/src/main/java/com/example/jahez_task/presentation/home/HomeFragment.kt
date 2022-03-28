@@ -1,13 +1,12 @@
 package com.example.jahez_task.presentation.home
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
+import androidx.core.widget.doOnTextChanged
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +14,6 @@ import com.example.jahez_task.R
 import com.example.jahez_task.base.BaseFragment
 import com.example.jahez_task.databinding.HomeFragmentBinding
 import com.example.jahez_task.domain.models.Restaurant
-import com.example.jahez_task.utils.Constants.AUTO_SORT
 import com.example.jahez_task.utils.Constants.DISTANCE_SORT
 import com.example.jahez_task.utils.Constants.RATING_SORT
 import com.google.android.material.appbar.AppBarLayout
@@ -37,6 +35,7 @@ class HomeFragment : BaseFragment(), SortBottomSheet.SortCallBack {
         savedInstanceState: Bundle?
     ): View {
         binding = HomeFragmentBinding.inflate(layoutInflater)
+        setBaseViewModel(viewModel)
 
         observeLoggedInState()
         observeRestaurant()
@@ -65,60 +64,20 @@ class HomeFragment : BaseFragment(), SortBottomSheet.SortCallBack {
     }
 
     private fun setSearchView() {
-        setSearchViewOnTouchListener()
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                TODO("Not yet implemented")
+        binding.searchView.doOnTextChanged { text, start, before, count ->
+            filteredRestaurants = restaurants.filter {
+                it.name.lowercase().contains(text.toString().lowercase())
             }
-
-            override fun onQueryTextChange(p0: String?): Boolean {
-                filteredRestaurants = restaurants.filter {
-                    it.name.lowercase().contains(p0.toString().lowercase())
-                }
-                binding.restaurantsRv.adapter = RestaurantAdapter(filteredRestaurants)
-                return true
-            }
-
-        })
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setSearchViewOnTouchListener() {
-        binding.searchView.setOnTouchListener { view, motionEvent ->
-            if (motionEvent.action == MotionEvent.ACTION_DOWN) {
-                binding.searchView.isIconified = false
-            }
-            true
+            binding.restaurantsRv.adapter = RestaurantAdapter(filteredRestaurants)
         }
     }
 
+
     private fun observeRestaurant() {
-        collectLifecycleFlow(viewLifecycleOwner, viewModel.restaurantsState) { state ->
-            when {
-                state.isLoading -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                    binding.errorTxtView.visibility = View.GONE
-                }
-                state.restaurants.isNotEmpty() -> {
-                    restaurants = state.restaurants
-                    filteredRestaurants = restaurants
-                    binding.progressBar.visibility = View.GONE
-                    binding.errorTxtView.visibility = View.GONE
-                    binding.restaurantsRv.adapter = RestaurantAdapter(filteredRestaurants)
-                }
-                state.message.isNotBlank() -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.errorTxtView.visibility = View.VISIBLE
-                    binding.errorTxtView.text = state.message
-                    Log.d(TAG, "observeRestaurant: ${state.message}")
-                }
-                else -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.errorTxtView.visibility = View.VISIBLE
-                    binding.errorTxtView.text = getString(R.string.error_label)
-                }
-            }
+        collectLifecycleFlow(viewLifecycleOwner, viewModel.restaurants) { restaurants ->
+            this.restaurants = restaurants
+            filteredRestaurants = restaurants
+            binding.restaurantsRv.adapter = RestaurantAdapter(filteredRestaurants)
         }
     }
 

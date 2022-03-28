@@ -44,6 +44,7 @@ class LoginFragment : BaseFragment(),
     ): View {
         binding = LoginFragmentBinding.inflate(layoutInflater)
         init()
+        setBaseViewModel(viewModel)
         observeLoginState()
 
         return binding.root
@@ -71,19 +72,9 @@ class LoginFragment : BaseFragment(),
 
     private fun observeLoginState() {
         collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.loginState){ state ->
-            when {
-                state.isLoading -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                state.isSuccessful -> {
-                    binding.progressBar.visibility = View.GONE
-                    showSnackbar(requireView(), "Success")
-                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                }
-                state.message.isNotBlank() -> {
-                    binding.progressBar.visibility = View.GONE
-                    showSnackbar(requireView(), state.message)
-                }
+            if (state){
+                binding.progressBar.visibility = View.GONE
+                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
             }
         }
     }

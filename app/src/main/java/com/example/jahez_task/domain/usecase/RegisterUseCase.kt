@@ -14,17 +14,5 @@ class RegisterUseCase @Inject constructor(
         name: String,
         email: String,
         password: String
-    ): Flow<Resource<AuthState>> = flow {
-        try {
-            emit(Resource.Loading())
-            val response = repository.register(name, email, password)
-            if (response.isSuccessful){
-                emit(Resource.Success(response))
-            }else {
-                emit(Resource.Error(message = response.message))
-            }
-        } catch (e: Exception) {
-            emit(Resource.Error(message = e.message))
-        }
-    }
+    ): Flow<Resource<Boolean>> = repository.register(name, email, password)
 }

@@ -45,6 +45,7 @@ class RegisterFragment : BaseFragment(),
     ): View {
         binding = RegisterFragmentBinding.inflate(layoutInflater)
         init()
+        setBaseViewModel(viewModel)
         observeRegisterState()
 
         return binding.root
@@ -62,26 +63,17 @@ class RegisterFragment : BaseFragment(),
     }
 
     private fun observeRegisterState() {
-        collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.registerState){ state ->
-            when {
-                state.isLoading -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                state.isSuccessful -> {
-                    binding.progressBar.visibility = View.GONE
-                    popBackStack()
-                }
-                state.message.isNotBlank() -> {
-                    binding.progressBar.visibility = View.GONE
-                    showSnackbar(requireView(), state.message)
-                }
+        collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.registerState) { state ->
+            if (state) {
+                binding.progressBar.visibility = View.GONE
+                popBackStack()
             }
         }
     }
 
-    private fun observeInputState(name: String, email: String, password: String){
-        collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.inputState){ state ->
-            when(state){
+    private fun observeInputState(name: String, email: String, password: String) {
+        collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.inputState) { state ->
+            when (state) {
                 INVALID_NAME -> {
                     binding.nameTxtInputL.isErrorEnabled = true
                     binding.nameTxtInputL.error = resources.getString(R.string.required_field)
@@ -115,7 +107,7 @@ class RegisterFragment : BaseFragment(),
     }
 
     override fun onClick(v: View?) {
-        when(v){
+        when (v) {
             binding.submitBtn -> onSubmitClicked()
             binding.loginTxtView -> popBackStack()
         }
@@ -131,7 +123,7 @@ class RegisterFragment : BaseFragment(),
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private fun onPassEndIconClicked(){
+    private fun onPassEndIconClicked() {
         if (viewModel.isPasswordVisible) {
             binding.passwordEdtTxt.inputType = 129 // it's wrong in InputType interface
             binding.confirmPassEdtTxt.inputType = 129
@@ -151,7 +143,7 @@ class RegisterFragment : BaseFragment(),
         }
     }
 
-    private fun onSubmitClicked(){
+    private fun onSubmitClicked() {
         val name = binding.nameEdtTxt.text.toString()
         val email = binding.emailEdtTxt.text.toString()
         val password = binding.passwordEdtTxt.text.toString().trim()

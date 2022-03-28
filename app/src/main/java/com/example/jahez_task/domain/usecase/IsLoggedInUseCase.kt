@@ -8,7 +8,5 @@ import javax.inject.Inject
 class IsLoggedInUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    suspend operator fun invoke(): Flow<Boolean> = flow {
-        emit(repository.isUserLoggedIn())
-    }
+    suspend operator fun invoke(): Flow<Boolean> = repository.isUserLoggedIn()
 }

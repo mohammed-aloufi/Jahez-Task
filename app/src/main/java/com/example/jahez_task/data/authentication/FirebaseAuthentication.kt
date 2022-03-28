@@ -16,7 +16,7 @@ class FirebaseAuthentication @Inject constructor(
         get() = auth.currentUser?.uid != null
 
     override suspend fun login(email: String, password: String): AuthState {
-        val result: AuthState = AuthState()
+        val result = AuthState()
         try {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener {

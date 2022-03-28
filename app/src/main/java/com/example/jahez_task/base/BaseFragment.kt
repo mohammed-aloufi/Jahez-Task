@@ -10,14 +10,46 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.jahez_task.R
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-open class BaseFragment: Fragment() {
+open class BaseFragment : Fragment() {
 
-    fun showSnackbar(view: View, message: String){
+    private lateinit var mBaseViewModel: BaseViewModel
+
+    protected fun setBaseViewModel(baseViewModel: BaseViewModel) {
+        mBaseViewModel = baseViewModel
+        collectLifecycleFlow(viewLifecycleOwner, mBaseViewModel.state) { state ->
+            when {
+                state.isLoading -> {
+                    showProgress(true)
+                }
+                state.message.isNotBlank() -> {
+                    showErrorMsg(true, state.message)
+                    showProgress(false)
+                }
+                else -> {
+                    showProgress(false)
+                    showErrorMsg(false)
+                }
+            }
+        }
+    }
+
+    private fun showProgress(show: Boolean) {
+        val base = requireActivity() as MainActivity
+        base.showProgress(show)
+    }
+
+    private fun showErrorMsg(show: Boolean, message: String = "") {
+        val base = requireActivity() as MainActivity
+        base.showErrorMsg(show, message)
+    }
+
+    fun showSnackbar(view: View, message: String) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG)
             .setBackgroundTint(
                 resources.getColor(R.color.light_red, resources.newTheme())
@@ -27,11 +59,15 @@ open class BaseFragment: Fragment() {
             ).show()
     }
 
-    fun popBackStack(){
+    fun popBackStack() {
         findNavController().popBackStack()
     }
 
-    fun <T> collectLatestLifecycleFlow(viewLifecycleOwner: LifecycleOwner, flow: Flow<T>, collect: suspend (T) -> Unit) {
+    fun <T> collectLatestLifecycleFlow(
+        viewLifecycleOwner: LifecycleOwner,
+        flow: Flow<T>,
+        collect: suspend (T) -> Unit
+    ) {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 flow.collectLatest(collect)
@@ -39,7 +75,11 @@ open class BaseFragment: Fragment() {
         }
     }
 
-    fun <T> collectLifecycleFlow(viewLifecycleOwner: LifecycleOwner, flow: Flow<T>, collect: suspend (T) -> Unit) {
+    fun <T> collectLifecycleFlow(
+        viewLifecycleOwner: LifecycleOwner,
+        flow: Flow<T>,
+        collect: suspend (T) -> Unit
+    ) {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 flow.collect(collect)

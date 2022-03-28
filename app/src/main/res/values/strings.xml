@@ -19,7 +19,7 @@
     <string name="invalid_email">Please enter a valid email</string>
     <string name="error_label">Unknown error</string>
     <string name="sort_by_label">Sort by</string>
-    <string name="automatic_sorting_label">Auto sort</string>
+    <string name="automatic_sorting_label">Auto</string>
     <string name="rating_label">Rating</string>
     <string name="distance_label">Distance</string>
 </resources>

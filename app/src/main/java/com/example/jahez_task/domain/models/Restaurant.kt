@@ -7,10 +7,9 @@ data class Restaurant(
     val name: String = "",
     val description: String = "",
     val hours: String = "",
-    @SerializedName("image")
     val imageUrl: String = "",
-    val rating: Int = 0,
-    val distance: Double = 0.0,
+    val rating: String = "",
+    val distance: String = "",
     val hasOffer: Boolean = false,
     val offer: String = ""
 )

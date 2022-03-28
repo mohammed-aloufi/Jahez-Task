@@ -3,7 +3,9 @@ package com.example.jahez_task.presentation.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.jahez_task.base.BaseViewModel
 import com.example.jahez_task.domain.models.Resource
+import com.example.jahez_task.domain.models.Restaurant
 import com.example.jahez_task.domain.models.RestaurantsState
 import com.example.jahez_task.domain.usecase.GetAllRestaurantsUseCase
 import com.example.jahez_task.domain.usecase.IsLoggedInUseCase
@@ -17,11 +19,11 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getAllRestaurantsUseCase: GetAllRestaurantsUseCase,
     private val isLoggedInUseCase: IsLoggedInUseCase
-): ViewModel() {
+): BaseViewModel() {
 
 
-    private val _restaurantsState: MutableSharedFlow<RestaurantsState> = MutableSharedFlow()
-    val restaurantsState: SharedFlow<RestaurantsState> = _restaurantsState
+    private val _restaurants: MutableStateFlow<List<Restaurant>> = MutableStateFlow(emptyList())
+    val restaurants: StateFlow<List<Restaurant>> = _restaurants
 
     private val _loggedState: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val loggedState: SharedFlow<Boolean> = _loggedState
@@ -44,19 +46,9 @@ class HomeViewModel @Inject constructor(
 
     private fun getAllRestaurants(){
         viewModelScope.launch {
-            getAllRestaurantsUseCase().onEach { result ->
-                when(result){
-                    is Resource.Loading -> {
-                        _restaurantsState.emit(RestaurantsState(isLoading = true))
-                    }
-                    is Resource.Success -> {
-                        _restaurantsState.emit(RestaurantsState(restaurants = result.data ?: emptyList()))
-                    }
-                    is Resource.Error -> {
-                        _restaurantsState.emit(RestaurantsState(message = result.message ?: ""))
-                    }
-                }
-            }.launchIn(viewModelScope)
+            collectFlow(getAllRestaurantsUseCase()){ result ->
+                _restaurants.value = result.data ?: emptyList()
+            }
         }
     }
 }

@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <data>
-        <variable
-            name="viewModel"
-            type="com.example.jahez_task.presentation.home.HomeViewModel" />
-    </data>
-
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -44,9 +37,9 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/black"
         android:textSize="16sp"
+        tools:text="name"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/cardView" />
-<!--        tools:text="@{() -> viewModel}"-->
 
 
     <View
@@ -91,7 +84,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:textSize="12sp"
-        tools:text="05:30 AM - 04:30 AM"
+        tools:text="hours"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -111,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            tools:text="0.8"
+            tools:text="distance"
             android:textSize="11sp" />
 
         <ImageView
@@ -140,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            tools:text="8.0"
+            tools:text="rating"
             android:textSize="11sp" />
 
         <ImageView
@@ -163,4 +156,3 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>

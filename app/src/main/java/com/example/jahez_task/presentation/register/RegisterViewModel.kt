@@ -3,6 +3,7 @@ package com.example.jahez_task.presentation.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jahez_task.R
+import com.example.jahez_task.base.BaseViewModel
 import com.example.jahez_task.domain.models.AuthState
 import com.example.jahez_task.domain.usecase.RegisterUseCase
 import com.example.jahez_task.domain.models.Resource
@@ -24,10 +25,10 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
-    private val _registerState: MutableSharedFlow<AuthState> = MutableSharedFlow()
-    val registerState: SharedFlow<AuthState> = _registerState
+    private val _registerState: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val registerState: StateFlow<Boolean> = _registerState
 
     private val _inputState: MutableSharedFlow<Int> = MutableSharedFlow()
     val inputState: SharedFlow<Int> = _inputState
@@ -36,23 +37,9 @@ class RegisterViewModel @Inject constructor(
 
     fun register(name: String, email: String, password: String) {
         viewModelScope.launch {
-            registerUseCase(name, email, password).onEach { result ->
-                when (result) {
-                    is Resource.Loading -> {
-                        _registerState.emit(AuthState(isLoading = true))
-                    }
-                    is Resource.Success -> {
-                        _registerState.emit(
-                            AuthState(
-                                isSuccessful = result.data?.isSuccessful ?: false
-                            )
-                        )
-                    }
-                    is Resource.Error -> {
-                        _registerState.emit(AuthState(message = result.message ?: "Unknown error!"))
-                    }
-                }
-            }.launchIn(viewModelScope)
+            collectFlow(registerUseCase(name, email, password)) { result ->
+                _registerState.value = result.data ?: false
+            }
         }
     }
 
