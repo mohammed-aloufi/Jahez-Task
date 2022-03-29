@@ -65,7 +65,6 @@ class RegisterFragment : BaseFragment(),
     private fun observeRegisterState() {
         collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.registerState) { state ->
             if (state) {
-                binding.progressBar.visibility = View.GONE
                 popBackStack()
             }
         }

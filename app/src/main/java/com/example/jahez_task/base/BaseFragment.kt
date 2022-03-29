@@ -29,11 +29,12 @@ open class BaseFragment : Fragment() {
                 }
                 state.message.isNotBlank() -> {
                     showErrorMsg(true, state.message)
+                    showSnackbar(requireView(), state.message)
                     showProgress(false)
                 }
                 else -> {
                     showProgress(false)
-                    showErrorMsg(false)
+//                    showErrorMsg(false)
                 }
             }
         }
@@ -49,15 +50,11 @@ open class BaseFragment : Fragment() {
         base.showErrorMsg(show, message)
     }
 
-    fun showSnackbar(view: View, message: String) {
-        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-            .setBackgroundTint(
-                resources.getColor(R.color.light_red, resources.newTheme())
-            )
-            .setTextColor(
-                resources.getColor(R.color.white, resources.newTheme())
-            ).show()
+    private fun showSnackbar(view: View, message: String){
+        val base = requireActivity() as MainActivity
+        base.showSnackbar(view, message)
     }
+
 
     fun popBackStack() {
         findNavController().popBackStack()

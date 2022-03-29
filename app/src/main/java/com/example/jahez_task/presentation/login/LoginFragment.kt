@@ -73,7 +73,6 @@ class LoginFragment : BaseFragment(),
     private fun observeLoginState() {
         collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.loginState){ state ->
             if (state){
-                binding.progressBar.visibility = View.GONE
                 findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
             }
         }

@@ -8,7 +8,9 @@ import com.example.jahez_task.domain.models.Restaurant
 import com.example.jahez_task.domain.models.RestaurantDto
 import com.example.jahez_task.domain.repository.Repository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import retrofit2.Response
 import javax.inject.Inject
 

@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import com.example.jahez_task.R
 import com.example.jahez_task.databinding.ActivityMainBinding
 import com.example.jahez_task.domain.models.State
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
@@ -64,5 +65,15 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.errorTxtView.visibility = View.GONE
         }
+    }
+
+    fun showSnackbar(view: View, message: String) {
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+            .setBackgroundTint(
+                resources.getColor(R.color.light_red, resources.newTheme())
+            )
+            .setTextColor(
+                resources.getColor(R.color.white, resources.newTheme())
+            ).show()
     }
 }
