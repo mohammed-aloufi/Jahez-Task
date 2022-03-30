@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.SharedFlow
 
 interface AuthProvider {
 
-    val isLoggedIn: Boolean
+    var isLoggedIn: Boolean?
 
     suspend fun login(email: String, password: String): AuthState
 

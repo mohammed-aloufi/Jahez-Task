@@ -9,6 +9,8 @@ import com.example.jahez_task.data.repository.RepositoryImpl
 import com.example.jahez_task.data.retrofitservice.JahezApi
 import com.example.jahez_task.domain.repository.Repository
 import com.example.jahez_task.utils.Constants.BASE_URL
+import com.example.jahez_task.utils.DefaultDispatchers
+import com.example.jahez_task.utils.DispatcherProvider
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
@@ -55,6 +57,12 @@ object AppModule {
     @Singleton
     fun provideJahezApi(retrofit: Retrofit): JahezApi {
         return retrofit.create(JahezApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDispatcherProvider(): DispatcherProvider {
+        return DefaultDispatchers()
     }
 
     @Provides

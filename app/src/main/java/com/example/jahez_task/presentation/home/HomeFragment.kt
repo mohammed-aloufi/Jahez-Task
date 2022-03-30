@@ -39,6 +39,8 @@ class HomeFragment : BaseFragment(), SortBottomSheet.SortCallBack {
 
         observeLoggedInState()
         observeRestaurant()
+        viewModel.getAllRestaurants()
+        viewModel.isLogged()
         setOnScrollListener()
         setRvLayoutManger()
         setSearchView()

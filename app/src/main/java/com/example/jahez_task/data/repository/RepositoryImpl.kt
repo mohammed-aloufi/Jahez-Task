@@ -44,7 +44,7 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun isUserLoggedIn(): Flow<Boolean> = flow {
-        emit(authProvider.isLoggedIn)
+        emit(authProvider.isLoggedIn ?: false)
     }
 
     override suspend fun getAllRestaurants(): Flow<Resource<List<Restaurant>>> = flow {

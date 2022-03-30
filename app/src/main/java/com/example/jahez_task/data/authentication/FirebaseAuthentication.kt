@@ -12,7 +12,7 @@ class FirebaseAuthentication @Inject constructor(
     private val auth: FirebaseAuth
 ) : AuthProvider {
 
-    override val isLoggedIn: Boolean
+    override var isLoggedIn: Boolean? = null
         get() = auth.currentUser?.uid != null
 
     override suspend fun login(email: String, password: String): AuthState {

@@ -25,7 +25,6 @@ import kotlinx.coroutines.withContext
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    val viewModel by viewModels<BaseViewModel>()
     private lateinit var binding: ActivityMainBinding
 
     @RequiresApi(Build.VERSION_CODES.R)
