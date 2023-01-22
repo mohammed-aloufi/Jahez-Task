@@ -1,12 +1,8 @@
 package com.example.jahez_task.base
 
-import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -60,11 +56,11 @@ open class BaseFragment : Fragment() {
     fun <T> collectLatestLifecycleFlow(
         viewLifecycleOwner: LifecycleOwner,
         flow: Flow<T>,
-        collect: suspend (T) -> Unit
+        result: suspend (T) -> Unit
     ) {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                flow.collectLatest(collect)
+                flow.collectLatest(result)
             }
         }
     }
@@ -72,11 +68,11 @@ open class BaseFragment : Fragment() {
     fun <T> collectLifecycleFlow(
         viewLifecycleOwner: LifecycleOwner,
         flow: Flow<T>,
-        collect: suspend (T) -> Unit
+        result: suspend (T) -> Unit
     ) {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                flow.collect(collect)
+                flow.collect(result)
             }
         }
     }

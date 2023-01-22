@@ -1,6 +1,7 @@
 package com.example.jahez_task.presentation.home
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.jahez_task.base.BaseViewModel
 import com.example.jahez_task.domain.models.Restaurant
@@ -27,6 +28,8 @@ class HomeViewModel @Inject constructor(
 
     private val _loggedState: MutableSharedFlow<Boolean> = MutableSharedFlow()
     val loggedState: SharedFlow<Boolean> = _loggedState
+
+    val test = MutableLiveData(false)
 
     var sortBy = AUTO_SORT
 

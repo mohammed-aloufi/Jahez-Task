@@ -1,4 +1,4 @@
-package com.example.jahez_task.presentation.home
+package com.example.jahez_task.home.presentation
 
 import app.cash.turbine.test
 import com.example.jahez_task.CoroutinesTestRule
@@ -6,15 +6,16 @@ import com.example.jahez_task.TestDispatchers
 import com.example.jahez_task.base.BaseViewModel
 import com.example.jahez_task.domain.models.Resource
 import com.example.jahez_task.domain.models.Restaurant
-import com.example.jahez_task.domain.models.State
 import com.example.jahez_task.domain.repository.Repository
 import com.example.jahez_task.domain.usecase.GetAllRestaurantsUseCase
 import com.example.jahez_task.domain.usecase.IsLoggedInUseCase
+import com.example.jahez_task.home.data.HomeViewModelData.emptyRestaurantsList
+import com.example.jahez_task.home.data.HomeViewModelData.restaurants
+import com.example.jahez_task.presentation.home.HomeViewModel
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
@@ -59,6 +60,8 @@ class HomeViewModelTest {
     @Test
     fun userNotLogged_returnsFalse() = coroutinesTestRule.testDispatcher.runBlockingTest {
         Mockito.`when`(repository.isUserLoggedIn()).thenReturn(flow { emit(false) })
+
+        homeViewModel.isLogged()
         val job = launch {
             homeViewModel.loggedState.test {
                 val emission = awaitItem()
@@ -66,7 +69,7 @@ class HomeViewModelTest {
                 cancelAndConsumeRemainingEvents()
             }
         }
-        homeViewModel.isLogged()
+
         job.join()
         job.cancel()
     }
@@ -103,19 +106,8 @@ class HomeViewModelTest {
 
     @Test
     fun gettingRestaurants_successWithData() = coroutinesTestRule.testDispatcher.runBlockingTest {
-        val restaurants = listOf(
-            Restaurant(
-                0,
-                "Kudu",
-                "Enjoy fast delivery from Jahez. Order now, or schedule your order any time you want",
-                "05:30 AM - 04:30 AM",
-                "https://jahez-other-oniiphi8.s3.eu-central-1.amazonaws.com/1.jpg",
-                "8",
-                "1.8",
-                false
-            )
-        )
         Mockito.`when`(repository.getAllRestaurants()).thenReturn(flow { emit(Resource.Success(restaurants)) })
+
         homeViewModel.getAllRestaurants()
 
         val job = launch {
@@ -131,8 +123,7 @@ class HomeViewModelTest {
 
     @Test
     fun gettingRestaurants_successWithoutData() = coroutinesTestRule.testDispatcher.runBlockingTest {
-        val restaurants = emptyList<Restaurant>()
-        Mockito.`when`(repository.getAllRestaurants()).thenReturn(flow { emit(Resource.Success(restaurants)) })
+        Mockito.`when`(repository.getAllRestaurants()).thenReturn(flow { emit(Resource.Success(emptyRestaurantsList)) })
         homeViewModel.getAllRestaurants()
 
         val job = launch {
@@ -160,4 +151,5 @@ class HomeViewModelTest {
         job.join()
         job.cancel()
     }
+
 }

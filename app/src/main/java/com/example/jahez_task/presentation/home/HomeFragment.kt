@@ -61,7 +61,6 @@ class HomeFragment : BaseFragment(), SortBottomSheet.SortCallBack {
     private fun observeLoggedInState() {
         collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.loggedState) {
             if (!it) findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
-            Log.d(TAG, "observeLoggedInState: $it")
         }
     }
 

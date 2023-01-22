@@ -97,4 +97,22 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1"
 
     testImplementation 'org.mockito:mockito-core:3.11.2'
+
+    // dependency for exoplayer
+    implementation "com.google.android.exoplayer:exoplayer:2.18.0"
+
+    // for core support in exoplayer.
+    implementation "com.google.android.exoplayer:exoplayer-core:2.18.0"
+
+    // for adding dash support in our exoplayer.
+    implementation "com.google.android.exoplayer:exoplayer-dash:2.18.0"
+
+    // for adding hls support in exoplayer.
+    implementation "com.google.android.exoplayer:exoplayer-hls:2.18.0"
+
+    // for smooth streaming of video in our exoplayer.
+    implementation "com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.0"
+
+    // for generating default ui of exoplayer
+    implementation "com.google.android.exoplayer:exoplayer-ui:2.18.0"
 }
